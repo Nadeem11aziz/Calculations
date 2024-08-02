@@ -1,0 +1,37 @@
+import pandas as pd
+import numpy as np
+import statsmodels.api as sm
+
+# Creating a mock dataset based on the provided tables
+data = {
+    'Age': np.random.choice([1, 2, 3, 4, 5], 205, p=[0.0146, 0.0195, 0.1415, 0.3317, 0.4927]),
+    'BMI': np.random.choice([1, 2, 3, 4], 205, p=[0.0683, 0.624, 0.2649, 0.0429]),
+    'Locality': np.random.choice([1, 2, 3], 205, p=[0.7756, 0.1805, 0.0439]),
+    'Marital_Status': np.random.choice([1, 2, 3], 205, p=[0.8244, 0.0244, 0.1512]),
+    'Literacy_Status': np.random.choice([1, 2, 3, 4], 205, p=[0.16, 0.3278, 0.1317, 0.3805]),
+    'Occupation': np.random.choice([1, 2, 3, 4], 205, p=[0.0341, 0.1366, 0.1512, 0.6781]),
+    'Socio_economic_status': np.random.choice([1, 2, 3, 4], 205, p=[0.2439, 0.1659, 0.1805, 0.4098]),
+    'Family_history_of_Asthma': np.random.choice([0, 1], 205, p=[0.4463, 0.5537]),
+    'Cooking': np.random.choice([1, 2, 3], 205, p=[0.9488, 0.0488, 0.0244]),
+    'Ventilation': np.random.choice([0, 1], 205, p=[0.7463, 0.2537]),
+    'Exposure_to_smoke': np.random.choice([1, 2, 3, 4], 205, p=[0.2341, 0.5707, 0.0244, 0.1707]),
+    'GOLD_Stage': np.random.choice([1, 2, 3], 205, p=[0.4878, 0.4268, 0.0854]),
+    'Duration_of_COPD': np.random.choice([0, 1], 205, p=[0.7122, 0.2878]),
+    'Hospitalization': np.random.choice([0, 1], 205, p=[0.8049, 0.1951]),
+    'CRP': np.random.choice([0, 1, 2], 205, p=[0.3951, 0.5512, 0.0537])
+}
+
+df = pd.DataFrame(data)
+
+# Defining the predictor variables and the outcome variable
+X = df.drop(columns=['CRP'])
+y = df['CRP']
+
+# Adding a constant to the predictor variables
+X = sm.add_constant(X)
+
+# Building the multivariate linear regression model
+model = sm.OLS(y, X).fit()
+
+# Displaying the summary of the model
+print(model.summary())
